@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thai ID OCR</title>
+</head>
+<body>
+    <h1>Thai ID OCR</h1>
+    <form id="ocrForm" enctype="multipart/form-data">
+        <input type="file" name="image" accept=".png, .jpg, .jpeg" required>
+        <button type="button" onclick="performOCR()">Submit</button>
+    </form>
+    <div id="output"></div>
+
+    <script>
+        async function performOCR() {
+            const form = document.getElementById('ocrForm');
+            const formData = new FormData(form);
+
+            try {
+                const response = await fetch('http://localhost:5000/api/ocr', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                document.getElementById('output').innerText = JSON.stringify(data, null, 2);
+            } catch (error) {
+                console.error('Error:', error.message);
+            }
+        }
+    </script>
+</body>
+</html>
